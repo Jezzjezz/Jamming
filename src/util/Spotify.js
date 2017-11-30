@@ -1,4 +1,4 @@
-const clientId = '';
+const clientId = '4bf8cf53a5e24f2e8c9d5c61d0d968b0';
 const redirect_uri = 'http://localhost:3000';
 
 let accessToken = '';
@@ -31,45 +31,45 @@ search(value){
   }).then(response => {
     return response.json();
   }).then(jsonResponse =>
-    {if(jsonResponse.tracks){
-      return jsonResponse.tracks.map(track =>
+    {if(!jsonResponse.tracks){
+      return [];
+    }
+    return jsonResponse.tracks.items.map(track =>
       ({ id: track.id,
          name: track.name,
          artist: track.artists[0].name,
          album: track.album.name,
          uri: track.uri
       }));
-    }  else{ return [];
-          }
-    })
+    });
   },
 
-  savePlaylist(playname,trackUris){
+  savePlaylist(playname, trackUris){
     if(!playname || !trackUris){
       return;
     }
     const accessToken = Spotify.getAccessToken();
     const headers = {Authorization: `Bearer${accessToken}`};
-    const userId = '';
+    let userId = '';
 
-    return fetch(`https://api.spotify.com/v1/me`,{headers: headers}
+    return fetch('https://api.spotify.com/v1/me',{headers: headers}
     ).then (response =>  response.json()
   ).then (jsonResponse => {
       userId = jsonResponse.id;
-      return fetch(`https://api.spotify.com/v1/users/${user_id}/playlists`,
+      return fetch(`https://api.spotify.com/v1/users/${userId}/playlists`,
         {headers: headers,
          method: 'POST',
          body: JSON.stringify
         ({playname: playname})
-      }).then (response => {
-        return response.json();
-      }).then (jsonResponse => {
-         const playlistId = jsonResponse.id ;
-         return fetch(`https://api.spotify.com/v1/users/${user_id}/playlists/${playlistId}/tracks`,
+      }).then (response =>
+         response.json()
+      ).then (jsonResponse => {
+         const playlistId = jsonResponse.id;
+         return fetch(`https://api.spotify.com/v1/users/${userId}/playlists/${playlistId}/tracks`,
          {headers: headers,
           method: 'POST',
           body: JSON.stringify
-        ({uris: trackuris})
+        ({uris: trackUris})
       });
       })
     });
