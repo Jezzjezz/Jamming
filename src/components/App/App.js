@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import Spotify from '../../util/Spotify.js';
-import SearchBar from './SearchBar/SearchBar';
-import SearchResults from './SearchResults/SearchResults';
-import Playlist from './Playlist/Playlist';
+import SearchBar from '../SearchBar/SearchBar.js';
+import SearchResults from '../SearchResults/SearchResults.js';
+import Playlist from '../Playlist/Playlist.js';
 
 class App extends Component {
   constructor(props){
@@ -52,17 +51,17 @@ this.savePlaylist = this.savePlaylist.bind(this);
     let trackURIs = [];
     this.state.playlistTracks.forEach(track => {
       trackURIs.push(track.uri);
-    })
+    });
     Spotify.savePlaylist(this.state.playlistName, trackURIs);
     this.setState({
       playlistName: 'New Playlist',
       searchResults: []
-    })
+    });
   }
   //Step 67 use spotify to search the term & then take the searchresults and updates the state
   searchSpotify(term){
     Spotify.search(term).then(searchResults => {
-      this.setState({searchResults: searchResults})
+      this.setState({searchResults: searchResults});
     })
   }
 
@@ -74,7 +73,7 @@ this.savePlaylist = this.savePlaylist.bind(this);
           <SearchBar onSearch={this.searchSpotify}/>
           <div className="App-playlist">
           <SearchResults searchResults={this.state.searchResults} onAdd={this.addTrack}/>
-          <Playlist playlistName={this.state.playlistName} playlistTracks={this.state.playlistTracks}
+          <Playlist playname={this.state.playlistName} playlistTracks={this.state.playlistTracks}
           onRemove={this.removeTrack} onNameChange={this.updatePlaylistName} onSave={this.savePlaylist}/>
           </div>
         </div>
