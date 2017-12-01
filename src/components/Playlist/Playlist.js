@@ -9,19 +9,17 @@ constructor(props){
 }
   //Step 59
   handleNameChange(event){
-    this.props.onNameChange(event.target.input);
+    this.props.onNameChange(event.target.value);
   }
 
   render(){
     return (
       <div className="Playlist">
-  <input defaultvalue={'New Playlist'}/>
-  <TrackList tracks={this.props.playlistTracks} onRemove={this.props.onRemove}/>
-  //Step 61
-  <Playlist onChange={this.handleNameChange}/>
-  <a className="Playlist-save" onClick={this.props.onSave}>SAVE TO SPOTIFY</a>
-</div>
-    )
+      <input defaultvalue={'New Playlist'} onChange={this.handleNameChange}/>
+      <TrackList tracks={this.props.playlistTracks} onRemove={this.props.onRemove}/>
+    <a className="Playlist-save" onClick={this.props.onSave}>SAVE TO SPOTIFY</a>
+    </div>
+  );
   }
 }
 
