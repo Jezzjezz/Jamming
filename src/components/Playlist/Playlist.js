@@ -9,7 +9,8 @@ constructor(props){
 }
   //Step 59
   handleNameChange(event){
-    this.props.onNameChange(event.target.value);
+    const name = event.target.value;
+    this.props.onNameChange(name);
   }
 
   render(){
