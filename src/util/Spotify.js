@@ -27,7 +27,7 @@ else{
 //Step 86
 search(value){
   const accessToken = Spotify.getAccessToken();
-  return fetch(`https://api.spotify.com/v1/search?type=track&q=${value}`,{headers: {Authorization: `Bearer${accessToken}`}
+  return fetch(`https://api.spotify.com/v1/search?type=track&q=${value}`,{headers: {Authorization: `Bearer ${accessToken}`}
   }).then(response => {
     return response.json();
   }).then(jsonResponse =>
@@ -44,33 +44,38 @@ search(value){
     });
   },
 
-  savePlaylist(playname, trackUris){
-    if(!playname || !trackUris){
+  savePlaylist(playlistName, trackUris){
+    if(!playlistName || !trackUris){
       return;
     }
     const accessToken = Spotify.getAccessToken();
-    const headers = {Authorization: `Bearer${accessToken}`};
+    const headers = {Authorization: `Bearer ${accessToken}`};
     let userId = '';
+    let playlistID ='';
 
-    return fetch('https://api.spotify.com/v1/me',{headers: headers}
-    ).then (response =>  response.json()
+    return fetch('https://api.spotify.com/v1/me',{
+      headers: headers}
+    ).then (response =>
+      response.json()
   ).then (jsonResponse => {
       userId = jsonResponse.id;
       return fetch(`https://api.spotify.com/v1/users/${userId}/playlists`,
         {headers: headers,
          method: 'POST',
-         body: JSON.stringify
-        ({playname: playname})
+         body: JSON.stringify({name: playlistName})
       }).then (response =>
          response.json()
       ).then (jsonResponse => {
-         const playlistId = jsonResponse.id;
-         return fetch(`https://api.spotify.com/v1/users/${userId}/playlists/${playlistId}/tracks`,
+          playlistID = jsonResponse.id;
+         return fetch(`https://api.spotify.com/v1/users/${userId}/playlists/${playlistID}/tracks`,
          {headers: headers,
           method: 'POST',
-          body: JSON.stringify
-        ({uris: trackUris})
-      });
+          body: JSON.stringify({uris: trackUris})
+      }).then (response =>
+      response.json()
+    ).then(jsonResponse => {
+       playlistID = jsonResponse.id;
+    })
       })
     });
   }
