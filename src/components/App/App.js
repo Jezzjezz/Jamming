@@ -73,7 +73,7 @@ this.savePlaylist = this.savePlaylist.bind(this);
           <SearchBar onSearch={this.searchSpotify}/>
           <div className="App-playlist">
           <SearchResults searchResults={this.state.searchResults} onAdd={this.addTrack}/>
-          <Playlist playname={this.state.playlistName} playlistTracks={this.state.playlistTracks}
+          <Playlist playlistName={this.state.playlistName} playlistTracks={this.state.playlistTracks}
           onRemove={this.removeTrack} onNameChange={this.updatePlaylistName} onSave={this.savePlaylist}/>
           </div>
         </div>
